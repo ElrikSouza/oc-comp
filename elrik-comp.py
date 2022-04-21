@@ -1,6 +1,3 @@
-from operator import le
-
-
 instruction_hex_prefix_dict: dict[str, str] = {
     "LOAD": "0",
     "STORE": "1",
@@ -44,29 +41,11 @@ def log_error(error_message: str, line_of_the_error: int = 0) -> None:
     print(f"ERRO (linha {line_of_the_error}): {error_message}")
 
 
-def to_hex_number_string(number: int):
-    hex_number_string = hex(number)
-
-    trimmed_hex_number_string = ''
-
-    if hex_number_string[0] == '-':
-        # -0x1 => 1
-        trimmed_hex_number_string = hex_number_string[3:]
-
-    else:
-        # 0x1 => 1
-        trimmed_hex_number_string = hex_number_string[2:]
-
-    return trimmed_hex_number_string.zfill(2)
-
-
-def binary_str_to_hex_str(binary_number: str) -> str:
-    return hex(int(binary_number), 2)
-
-
 def register_parameters_to_hex_number(register_a_index: int, register_b_index: int) -> str:
     hex_register_address = (register_a_index << 2) + register_b_index
-    return eight_bit_int_to_hex_string(hex_register_address)
+
+    # remove the leading zero
+    return eight_bit_int_to_hex_string(hex_register_address)[1:]
 
 
 def decode_IO_instruction():

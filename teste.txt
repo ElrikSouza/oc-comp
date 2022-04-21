@@ -1,0 +1,6 @@
+ADD R1,R2
+NOT R1,R2
+DATA R2,23
+teste:
+DATA R1,0x23
+JMP teste
