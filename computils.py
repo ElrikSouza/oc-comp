@@ -22,21 +22,14 @@ def is_goto_label(raw_input: str) -> bool:
 
 
 def parse_number_argument(number_arg: str) -> str:
-    if number_arg.startswith('0x'):
-        hex_number = number_arg[2:]
+    number_representation_base = 10
+    if number_arg.startswith('0x') or number_arg.startswith('0X'):
+        number_representation_base = 16
 
-        if len(hex_number) > 2:
-            raise Exception("Argumento so pode ter ate 8 bits")
-
-        if len(hex_number) == 1:
-            return '0' + hex_number
-
-        return hex_number
-
-    int_number = int(number_arg)
+    int_number = int(number_arg, number_representation_base)
 
     if int_number > MAX_UNSIGNED_8BIT_INT or int_number < MIN_NEGATIVE_8BIT_INT:
-        raise Exception("Argumento so pode ter ate 8 bits")
+        raise Exception("Argumento só pode ter até 8 bits")
 
     return eight_bit_int_to_hex_string(int_number)
 
@@ -44,18 +37,19 @@ def parse_number_argument(number_arg: str) -> str:
 def get_register_address(register_name: str) -> int:
 
     if len(register_name) != 2 or register_name[0] != 'R':
-        raise Exception(f"Nome de registrador invalido {register_name}")
+        raise Exception(f"Nome de registrador inválido {register_name}")
 
     # ['R', '1'] => 1
     register_address = int(register_name[1])
 
     if register_address < 0 or register_address > 3:
-        raise Exception("Os registradoores do circuito sao numerados de 0 a 3")
+        raise Exception("Os registradoores do circuito são numerados de 0 a 3")
 
     return register_address
 
 
 def register_parameters_to_hex_number(register_a_index: int, register_b_index: int) -> str:
+    # 11, 01 => 1100, 01 => 1101
     hex_register_address = (register_a_index << 2) + register_b_index
 
     # remove the leading zero

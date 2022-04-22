@@ -1,5 +1,8 @@
 ADD R1,R2
 NOT R1,R2
+DATA R3,34
+DATA R2,0x34
+DATA R1,-1 
 DATA R2,23 # comment
 # AHdaljdlasljfj
 teste:

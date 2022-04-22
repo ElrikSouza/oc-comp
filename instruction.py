@@ -19,8 +19,8 @@ instruction_hex_prefix_dict: dict[str, str] = {
 
 
 class Instruction:
-    def __init__(self, instruction_name: str, args: str) -> None:
-        self.instruction_name = instruction_name
+    def __init__(self, instruction_name: str, args: list[str]) -> None:
+        self.name = instruction_name
         self.args = args
 
 
@@ -31,5 +31,6 @@ def parse_instruction(raw_instruction_input: str) -> Instruction:
         raise Exception("Instrução deve ter um nome e uma lista de argumentos")
 
     [instruction_name, args] = split_instruction
+    arg_list = args.split(',')
 
-    return Instruction(instruction_name, args)
+    return Instruction(instruction_name, arg_list)
