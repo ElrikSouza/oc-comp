@@ -1,5 +1,3 @@
-from computils import log_error
-
 instruction_hex_prefix_dict: dict[str, str] = {
     "LOAD": "0",
     "STORE": "1",
@@ -30,8 +28,7 @@ def parse_instruction(raw_instruction_input: str) -> Instruction:
     split_instruction = raw_instruction_input.split(" ")
 
     if len(split_instruction) != 2:
-        log_error("Instrução deve ter um nome e uma lista de argumentos")
-        raise "error"
+        raise Exception("Instrução deve ter um nome e uma lista de argumentos")
 
     [instruction_name, args] = split_instruction
 

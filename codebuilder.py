@@ -8,9 +8,20 @@ class CodeBuilder:
         self.hex_instructions: list[str] = list()
         self.label_name_address_dict: dict[str, str] = dict()
 
+    def __remove_comments(self, line: str) -> str:
+        split_line = line.split('#')
+
+        return split_line[0]
+
     def __add_new_label(self, label: str) -> None:
         if label in self.label_name_address_dict.keys():
             raise Exception(f"Label {label} já foi usada")
+
+        if label == '':
+            raise Exception("Nome de uma label não pode ser vazio")
+
+        if len(label.split(' ')) != 1:
+            raise Exception("Nome de uma label não pode ter espaços")
 
         next_instruction_index = len(self.hex_instructions)
         next_instruction_address = eight_bit_int_to_hex_string(
@@ -22,12 +33,12 @@ class CodeBuilder:
 
     def process_line_of_code(self, raw_line_input: str) -> None:
         trimmed_line = raw_line_input.strip()
+        trimmed_line = self.__remove_comments(trimmed_line).strip()
 
         if len(trimmed_line) == 0:
             return
 
         if is_goto_label(trimmed_line):
-            # remove ":"
             label = trimmed_line[:-1]
             self.__add_new_label(label)
         else:

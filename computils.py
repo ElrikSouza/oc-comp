@@ -12,8 +12,9 @@ def eight_bit_int_to_hex_string(number: int) -> str:
     return final_hex_representation
 
 
-def log_error(error_message: str) -> None:
-    print(f"ERRO: {error_message}")
+def log_error(error_message: str, line_number=0) -> None:
+    print(
+        f"\033[1;31;40m ERRO (Linha {line_number}): {error_message} \033[0;0m")
 
 
 def is_goto_label(raw_input: str) -> bool:
@@ -25,8 +26,7 @@ def parse_number_argument(number_arg: str) -> str:
         hex_number = number_arg[2:]
 
         if len(hex_number) > 2:
-            log_error("Argumento so pode ter ate 8 bits")
-            raise "error"
+            raise Exception("Argumento so pode ter ate 8 bits")
 
         if len(hex_number) == 1:
             return '0' + hex_number
@@ -36,8 +36,7 @@ def parse_number_argument(number_arg: str) -> str:
     int_number = int(number_arg)
 
     if int_number > MAX_UNSIGNED_8BIT_INT or int_number < MIN_NEGATIVE_8BIT_INT:
-        log_error("Argumento so pode ter ate 8 bits")
-        raise "error"
+        raise Exception("Argumento so pode ter ate 8 bits")
 
     return eight_bit_int_to_hex_string(int_number)
 
@@ -45,15 +44,13 @@ def parse_number_argument(number_arg: str) -> str:
 def get_register_address(register_name: str) -> int:
 
     if len(register_name) != 2 or register_name[0] != 'R':
-        log_error(f"Nome de registrador invalido {register_name}")
-        raise "error"
+        raise Exception(f"Nome de registrador invalido {register_name}")
 
     # ['R', '1'] => 1
     register_address = int(register_name[1])
 
     if register_address < 0 or register_address > 3:
-        log_error("Os registradoores do circuito sao numerados de 0 a 3")
-        raise "error"
+        raise Exception("Os registradoores do circuito sao numerados de 0 a 3")
 
     return register_address
 
